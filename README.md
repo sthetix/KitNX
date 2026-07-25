@@ -6,7 +6,7 @@
 
 **An all-in-one bare-metal maintenance and recovery payload for Nintendo Switch.**
 
-KitNX combines commonly needed RCM fixes in one guided interface, avoiding the extra step of opening TegraExplorer and selecting a script.
+KitNX combines commonly needed maintenance and recovery tools in one guided interface, avoiding the extra step of opening TegraExplorer and selecting a script.
 
 ## Features
 
