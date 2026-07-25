@@ -18,7 +18,7 @@ KitNX combines commonly needed RCM fixes in one guided interface, avoiding the e
 
 ### Compatibility Tools
 
-- Apply the bundled Atmosphere 1.11.2 Tinfoil-compatible `package3`.
+- Apply the bundled Tinfoil-compatible Atmosphere `package3`.
 - Back up and restore the original `package3` and boot logos.
 
 ### Maintenance and Recovery
@@ -56,7 +56,7 @@ Set up devkitPro/devkitARM, then run:
 make
 ```
 
-The build creates `output/KitNX.bin` and `output/KitNX-<version>.zip`. The ZIP includes the payload and the version-specific bundled `package3` under `config/kitnx/tce/`.
+The build creates the KitNX payload and release ZIP under `output/`. The ZIP includes the payload and the bundled `package3` under `config/kitnx/tce/`.
 
 ## License
 
