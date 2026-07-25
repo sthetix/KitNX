@@ -1,5 +1,9 @@
 # KitNX
 
+<p align="center">
+  <img src="images/preview.bmp" width="65%" />
+</p>
+
 **An all-in-one bare-metal maintenance and recovery payload for Nintendo Switch.**
 
 KitNX combines commonly needed RCM fixes in one guided interface, avoiding the extra step of opening TegraExplorer and selecting a script.
