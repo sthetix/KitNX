@@ -31,7 +31,7 @@ Input_t *hidRead(){
     u8 right_connected = 0;
 
     if (controller != NULL){
-        inputs.buttons = controller->buttons;
+        inputs.buttons = controller->buttons & ~BIT(10); // Ignore R3 in UI input.
 
         left_connected = controller->conn_l;
         right_connected = controller->conn_r;

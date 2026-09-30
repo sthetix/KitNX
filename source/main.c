@@ -311,8 +311,8 @@ void launch_hekate()
 #define PACKAGE3_PATH "sd:/atmosphere/package3"
 #define BOOTLOGO_EMUMMC_PATH "sd:/bootloader/res/emummc.bmp"
 #define BOOTLOGO_SYSMMC_PATH "sd:/bootloader/res/sysmmc.bmp"
-#define TINFOIL_ATMOSPHERE_VERSION "1.11.2"
-#define TINFOIL_PACKAGE3_PATH "sd:/config/kitnx/tce/1.11.2/package3"
+#define TINFOIL_ATMOSPHERE_VERSION "1.12.0"
+#define TINFOIL_PACKAGE3_PATH "sd:/config/kitnx/tce/1.12.0/package3"
 #define TINFOIL_EMUMMC_PATH "sd:/config/kitnx/tce/emummc.bmp"
 #define TINFOIL_SYSMMC_PATH "sd:/config/kitnx/tce/sysmmc.bmp"
 #define TINFOIL_BACKUP_PACKAGE3_PATH "sd:/config/kitnx/tce/backup/package3"
@@ -411,17 +411,17 @@ const char *sys_settings_both_online =
 "add_defaults_to_dns_hosts = u8!0x0\n";
 
 static const u8 package3_stock_sha256[SE_SHA_256_SIZE] = {
-	0xF1, 0x62, 0xA4, 0x19, 0x88, 0x73, 0x74, 0x02,
-	0x81, 0x03, 0xE0, 0x97, 0xDC, 0x56, 0x79, 0xF9,
-	0x7B, 0x3B, 0x22, 0x50, 0x1F, 0xEE, 0x66, 0x74,
-	0x05, 0xA3, 0xBC, 0x96, 0x5E, 0xEA, 0xA3, 0xF2
+	0x3C, 0xC9, 0xD6, 0xCA, 0x56, 0x88, 0xE4, 0x03,
+	0xC3, 0x69, 0x74, 0xBC, 0xED, 0x10, 0x89, 0x39,
+	0x7E, 0xF8, 0xB3, 0x6A, 0x42, 0x52, 0xF7, 0x20,
+	0x20, 0x7A, 0xE3, 0xD4, 0x1A, 0x6E, 0xB5, 0x57
 };
 
 static const u8 package3_tinfoil_sha256[SE_SHA_256_SIZE] = {
-	0xFC, 0x0B, 0x59, 0x20, 0x4A, 0xF2, 0x5B, 0x23,
-	0x49, 0x2D, 0x1A, 0x1C, 0x69, 0x3A, 0xAA, 0x19,
-	0xEF, 0xB1, 0xE9, 0x2E, 0x8F, 0x92, 0x96, 0x41,
-	0x30, 0x72, 0x21, 0x01, 0x66, 0x89, 0x39, 0x1C
+	0xEB, 0x41, 0xB4, 0xA5, 0xA1, 0x2F, 0xC2, 0xEA,
+	0x0E, 0x1E, 0x04, 0x10, 0x93, 0x2D, 0xFE, 0x85,
+	0x65, 0x0C, 0x2F, 0x2A, 0xB1, 0xEF, 0x5A, 0x20,
+	0xE0, 0x6E, 0x22, 0x26, 0xE0, 0xB0, 0x45, 0x0E
 };
 
 static const u8 emummc_tinfoil_sha256[SE_SHA_256_SIZE] = {
@@ -1140,22 +1140,30 @@ out:
 	wait_for_return();
 }
 
+static void wait_for_tinfoil_return()
+{
+	gfx_printf("\n%kPress any button to return.", COLOR_CYAN_L);
+	hidWaitMask(WAITBUTTONS | BtnPow | BtnVolP | BtnVolM);
+	while (hidRead()->buttons & (WAITBUTTONS | BtnPow | BtnVolP | BtnVolM))
+		msleep(10);
+}
+
 void apply_tinfoil_compatibility()
 {
 	draw_kitnx_screen("Tinfoil Compatibility");
 	gfx_printf("%kThis will replace Atmosphere package3.\n", COLOR_RED);
 	gfx_printf("%kOnly Atmosphere " TINFOIL_ATMOSPHERE_VERSION " package3 is accepted.\n", COLOR_WHITE);
-	gfx_printf("%kPress VOL+ to continue or any other button to cancel.\n\n", COLOR_WHITE);
+	gfx_printf("%kVOL+/D-pad Up: Continue. B/VOL-: Cancel.\n\n", COLOR_WHITE);
 
-	Input_t *inp = hidWait();
+	Input_t *inp = hidWaitMask(BtnVolP | JoyLUp | JoyB | BtnVolM | JoyLDown);
 	if (!(inp->buttons & (BtnVolP | JoyLUp)))
 	{
 		gfx_printf("%kCancelled.\n", COLOR_WHITE);
-		wait_for_return();
-		return;
+		goto out;
 	}
 
 	draw_kitnx_screen("Tinfoil Compatibility");
+
 	if (!sd_mount())
 	{
 		EPRINTF("Failed to mount SD card!");
@@ -1263,11 +1271,13 @@ void apply_tinfoil_compatibility()
 		gfx_printf("\n%kTinfoil Compatibility applied.\n", COLOR_GREEN);
 	}
 	else
+	{
 		gfx_printf("\n%kTinfoil Compatibility did not fully apply.\n", COLOR_WARNING);
+	}
 
 out:
 	sd_end();
-	wait_for_return();
+	wait_for_tinfoil_return();
 }
 
 void restore_original_package3()
@@ -1409,7 +1419,7 @@ ment_t ment_top[] = {
 	MDEF_HANDLER("Allow Nintendo Connectivity", set_sysmmc_online, COLOR_TURQUOISE),
 	MDEF_CHGLINE(),
 	MDEF_CAPTION("--- Compatibility Tools ---", COLOR_WHITE),
-	MDEF_HANDLER("Apply Tinfoil Compatibility 1.11.2", apply_tinfoil_compatibility, COLOR_TURQUOISE),
+	MDEF_HANDLER("Apply Tinfoil Compatibility 1.12.0", apply_tinfoil_compatibility, COLOR_TURQUOISE),
 	MDEF_HANDLER("Restore Original Package3", restore_original_package3, COLOR_TURQUOISE),
 	MDEF_CHGLINE(),
 	MDEF_CAPTION("--- NXTheme Recovery ---", COLOR_WHITE),
@@ -1475,6 +1485,7 @@ void ipl_main()
 
 	display_backlight_pwm_init();
 
+
 	// Initialize HID input (Joy-Con support)
 	hidInit();
 
@@ -1493,6 +1504,7 @@ void ipl_main()
 	}
 
 	minerva_change_freq(FREQ_800);
+
 
 	while (true)
 		tui_do_menu(&menu_top);

@@ -83,9 +83,9 @@ zip: $(LDRDIR)
 	@echo "Creating release zip..."
 	@rm -rf $(OUTPUTDIR)/zip_temp
 	@mkdir -p $(OUTPUTDIR)/zip_temp/bootloader/payloads
-	@mkdir -p $(OUTPUTDIR)/zip_temp/config/kitnx/tce/1.11.2
+	@mkdir -p $(OUTPUTDIR)/zip_temp/config/kitnx/tce/1.12.0
 	@cp $(OUTPUTDIR)/$(TARGET).bin $(OUTPUTDIR)/zip_temp/bootloader/payloads/$(TARGET).bin
-	@cp config/kitnx/tce/1.11.2/package3 $(OUTPUTDIR)/zip_temp/config/kitnx/tce/1.11.2/package3
+	@cp config/kitnx/tce/1.12.0/package3 $(OUTPUTDIR)/zip_temp/config/kitnx/tce/1.12.0/package3
 	@cp config/kitnx/tce/emummc.bmp $(OUTPUTDIR)/zip_temp/config/kitnx/tce/emummc.bmp
 	@cp config/kitnx/tce/sysmmc.bmp $(OUTPUTDIR)/zip_temp/config/kitnx/tce/sysmmc.bmp
 	@cd $(OUTPUTDIR)/zip_temp && zip -r ../$(TARGET)-$(LPVERSION_MAJOR).$(LPVERSION_MINOR).$(LPVERSION_BUGFX).zip .
